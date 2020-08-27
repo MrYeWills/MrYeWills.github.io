@@ -43,6 +43,28 @@ http一个链接只能提交一个请求，而http2能同时处理无数个请�
 http2通过gzip与compress对头部进行压缩，并且在客户端与服务端各维护了一份头部索引表，只需要根据索引id就可以进行头部信息的传输，缩小了头部容量，间接提升了传输效率。
 - 服务端推送
 http2可以主动推送资源到客户端，避免客户端花过多时间逐个请求，降低相应时间
+### mvc mvvm 与 react vue
+mvc= model 数据 + view 视图 + controler 逻辑处理／数据调度者(单向)
+mvvm = model 数据 + view 视图 + viewmodel 调度者（双向绑定）
+[参考](https://www.jianshu.com/p/220729f01a25)
+[参考](https://www.bilibili.com/video/BV1Xf4y1m7x5?from=search&seid=14281577773722133844)
+mvc：
+- View 传送指令到 Controller
+- Controller 完成业务逻辑后，要求 Model 改变状态
+- Model 将新的数据发送到 View，用户得到反馈
+所有通信都是单向的。
+mvc的主要特点是单向数据流，
+
+mvvm：
+- View的变动，自动反映在 ViewModel，反之亦然。
+- viewmodel 将数据与 model同步
+- model 与 view 不直接联系
+mvvm主要特点是双向绑定，model与view不直接交互，而是通过vm。
+
+react 应该是一个 model+view 的 mv框架，加上redux变成 mvc。
+mvc除了在前端，其实最早是在后端运用
+另外一个图片参考：
+![](/image/git/mvvm.png)
 
 
 
