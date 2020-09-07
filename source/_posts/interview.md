@@ -1,6 +1,6 @@
 ---
 title: 面试笔记
-date: {{ date }}
+date: 2020/9/5
 tags: [typescript]
 categories: 
 - typescript
@@ -33,6 +33,7 @@ series: typescript
 - cdn分发
 通过在多台服务器部署相同的副本，当用户访问时，服务器根据用户跟哪台服务器地理距离小或者哪台服务器此时的压力小，来决定哪台服务器去响应这个请求。
 - 缓存
+
 ## 其他
 ### http2与http1区别
 - 二进制传输
@@ -43,11 +44,13 @@ http一个链接只能提交一个请求，而http2能同时处理无数个请�
 http2通过gzip与compress对头部进行压缩，并且在客户端与服务端各维护了一份头部索引表，只需要根据索引id就可以进行头部信息的传输，缩小了头部容量，间接提升了传输效率。
 - 服务端推送
 http2可以主动推送资源到客户端，避免客户端花过多时间逐个请求，降低相应时间
+
 ### mvc mvvm 与 react vue
 mvc= model 数据 + view 视图 + controler 逻辑处理／数据调度者(单向)
 mvvm = model 数据 + view 视图 + viewmodel 调度者（双向绑定）
 [参考](https://www.jianshu.com/p/220729f01a25)
 [参考](https://www.bilibili.com/video/BV1Xf4y1m7x5?from=search&seid=14281577773722133844)
+[双向绑定](https://segmentfault.com/a/1190000006599500)
 mvc：
 - View 传送指令到 Controller
 - Controller 完成业务逻辑后，要求 Model 改变状态
@@ -61,10 +64,79 @@ mvvm：
 - model 与 view 不直接联系
 mvvm主要特点是双向绑定，model与view不直接交互，而是通过vm。
 
+目前几种主流的mvc(vm)框架都实现了单向数据绑定，而我所理解的双向数据绑定无非就是在单向绑定的基础上给可输入元素（input、textare等）添加了change(input)事件，来动态修改model和 view，并没有多高深。所以无需太过介怀是实现的单向或双向绑定。
+数据劫持（vue.js）
+
+model 数据改变 就通过vm(调度器) 让view层响应数据的渲染；
+view层 渲染改变的时候，通过vm(给组件绑定事件)， 让model数据跟着改变；
+
+
 react 应该是一个 model+view 的 mv框架，加上redux变成 mvc。
 mvc除了在前端，其实最早是在后端运用
 另外一个图片参考：
 ![](/image/git/mvvm.png)
+
+### redux redux-thunk react-redux
+#### redux 概述
+![](/image/end/redux.jpg)
+#### API
+- createStore(reducers)
+- store.getState
+- store.dispatch
+- store.subscribe
+- store.subscribe
+- combineReducers ：Reducer 的拆分
+#### Reducer 的拆分
+使用：`import { combineReducers } from 'redux';`
+#### 参考
+[redux](http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html)
+### 为什么废弃react生命周期函数
+[为什么废弃react生命周期函数](https://segmentfault.com/a/1190000021272657)
+废弃的原因主要两个
+- 是因为fiber的出现，很可能因为高优先级任务的出现而打断现有任务导致它们会被执行多次
+- 让开发能够更加规范和优雅写代码 如 componentWillReceiveProps
+具体如下：
+- componentWillMount
+ - 在Fiber之后， 由于任务可中断，willMount可能会被执行多次
+ - 完全可以将之前功能写到 constructor 和 componentDidmount 上
+- componentWillUpdate
+ - 在Fiber之后， 由于任务可中断，willMount可能会被执行多次
+ - 可以将功能移到componentDidUpdate
+- componentWillReceiveProps
+ - 主要做props来改变state，这样写导致state值来源不单一或看代码复杂，比如你还可以在componentWillReceiveProps上引用class其他内部方法，在其他内部方法内又可以做setState，，，新的做法将这个功能独立到 静态函数 getDriveStatefromProps，就很单纯而清晰。
+ - 另外要处理的一些非state逻辑，可以移到 componentDidUpdate
+
+ ### 一个对象继承另外一个对象(Object.defineProperty)
+ 下面实现了 dd 继承了 cc，当cc改变时，dd也会跟着变。
+ 其实就是用了数据劫持 Object.defineProperty
+ ```js
+    var dd = {a:1,b:5};
+    var cc = {fn:(e)=>{console.log(e||111)}, aq:123};
+    Object.entries(cc).forEach(([key, value]) => {
+        Object.defineProperty(dd, key, {
+            enumerable:false,
+            configurable:false,
+            get:()=>{
+                return cc[key];
+            }
+        })
+    });
+ ```
+
+ ### ngnix代理
+ #### 概述
+ node java 用于后端写业务；
+ ngnix 后端代理转发，好处有：
+ - 不用修改原来比如node java 写的代码，做一些升级 如将服务升级到http2；
+ - 将一些纯后端配置优化的东西内聚，让node java 专注于写后端业务代码， 这些后端配置优化包含 代理缓存 http2 升级；
+ 
+ #### ngnix代理缓存与服务端缓存
+ 服务端缓存 基于 浏览器，如果换一个浏览器请求需重新缓存；
+ ngnix代理缓存 基于 用户， 如果用户第一次请求后，用户下次换各种不同浏览器 都可以享受缓存；
+ #### 参考
+ [HTTP协议原理+实践 Web开发工程师必学]()
+
+
 
 
 
