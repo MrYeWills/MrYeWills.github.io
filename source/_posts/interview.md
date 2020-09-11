@@ -136,6 +136,20 @@ mvc除了在前端，其实最早是在后端运用
  #### 参考
  [HTTP协议原理+实践 Web开发工程师必学]()
 
+ ### css3
+ - transform-origin
+ - animation ： animation:circle 2s infinite linear;
+ - @keyframes circle
+ - transition  :transition: width/all 0.4s ease-out;
+ - box-shadow  :5px 5px blue
+ - outline
+ - background-image: linear-gradient(blue, green 30%, red 50%);（线性渐变）
+ - background-position
+ - @font-face
+ - background-size: 100% auto 背景图片的宽度为元素宽度100%，高度由浏览器自动计算一个值，保持不失真(推荐)
+ - background-origin 是否从border开始，是否从padding开始， 是否从content开始/background-clip
+
+
 
 
 
